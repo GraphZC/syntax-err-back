@@ -4,6 +4,8 @@ const port = 5000
 const mongoose = require('mongoose')
 const Code = require('./models/Code')
 const Answer = require('./models/Answer')
+const Extra = require('./models/Extra')
+const Hint = require('./models/Hint')
 
 app.use(express.json())
 app.use(function(req, res, next) {
@@ -19,7 +21,7 @@ mongoose.connect('mongodb+srv://tanaroeg123:70iAIxB4kbJpnUYT@synerr.0bhhwiu.mong
 })
 
 app.get('/', (req, res) => {
-    res.send('Hello Worlddd')
+    res.send('Just an API.')
 })
 
 app.post('/api/verify/', async (req, res) => {
@@ -69,7 +71,35 @@ app.post('/api/answer/verify', async (req, res) => {
 
 app.post('/api/redeem/', async (req, res) => {
     const redeem = await Code.findOneAndDelete({ key: req.body.key });
-    if (redeem.length != 0) {
+    if (redeem) {
+        let extra = await Extra.findOneAndUpdate({ id: "62c90eb73fc9eebb5f8549db" }, { $inc: { 'num': 1 } })
+        res.json({
+            "success": true,
+            "extra": extra.num + 1
+        })
+    } else {
+        let extra = await Extra.findOne({ id: "62c90eb73fc9eebb5f8549db" })
+        res.json({
+            "success": false,
+            "extra": extra.num
+        })
+    }
+})
+
+app.get('/api/extra/', async (req, res) => {
+    let extra = await Extra.findOne({ id: "62c90eb73fc9eebb5f8549db" })
+    res.json({
+        "extra": extra.num
+    })
+})
+
+app.post('/api/redeem/extra/', async (req, res) => {
+    let extra = await Extra.findOne({ id: "62c90eb73fc9eebb5f8549db" })
+    if (extra.num > 0 && req.body.hintNumber) {
+        await Extra.findOneAndUpdate({ id: "62c90eb73fc9eebb5f8549db" } , { $inc: { 'num': -1 }})
+        let hint = await Hint.findOneAndUpdate(
+            { own: req.body.hintNumber },
+            { isUnlock: true })
         res.json({
             "success": true
         })
@@ -78,6 +108,11 @@ app.post('/api/redeem/', async (req, res) => {
             "success": false
         })
     }
+})
+
+app.get('/api/hints/', async (req, res) => {
+    let hint = await Hint.find({ isUnlock: true })
+    res.json({hint})
 })
 
 app.listen(port, () => {
