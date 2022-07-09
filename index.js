@@ -11,6 +11,10 @@ mongoose.connect('mongodb+srv://tanaroeg123:70iAIxB4kbJpnUYT@synerr.0bhhwiu.mong
     useNewUrlParser: true
 })
 
+app.get('/', async (req, res) => {
+    res.send('Hello World')
+})
+
 app.post('/api/verify/', async (req, res) => {
     const code = await Code.find({ key: req.body.key })
 
