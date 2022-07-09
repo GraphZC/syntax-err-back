@@ -11,7 +11,7 @@ mongoose.connect('mongodb+srv://tanaroeg123:70iAIxB4kbJpnUYT@synerr.0bhhwiu.mong
     useNewUrlParser: true
 })
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     res.send('Hello World')
 })
 
