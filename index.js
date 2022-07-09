@@ -12,7 +12,7 @@ mongoose.connect('mongodb+srv://tanaroeg123:70iAIxB4kbJpnUYT@synerr.0bhhwiu.mong
 })
 
 app.get('/', (req, res) => {
-    res.send('Hello World')
+    res.send('Hello Worlddd')
 })
 
 app.get('/test', (req, res) => {
