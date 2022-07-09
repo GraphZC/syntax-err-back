@@ -22,10 +22,6 @@ app.get('/', (req, res) => {
     res.send('Hello Worlddd')
 })
 
-app.get('/test', (req, res) => {
-    res.send("Test")
-})
-
 app.post('/api/verify/', async (req, res) => {
     const code = await Code.find({ key: req.body.key })
 
@@ -56,9 +52,24 @@ app.get('/api/answer/isfinish', async(req, res) => {
 
 app.post('/api/answer/verify', async (req, res) => {
     const ans = await Answer.find({ ans: req.body.ans })
-
     if ( ans.length != 0 ) {
-        await Answer.findOneAndUpdate({ ans: req.body.ans }, { isFinish: true })
+        await Answer.findOneAndUpdate(
+            { ans: req.body.ans }, 
+            { isFinish: true }
+        )
+        res.json({
+            "success": true
+        })
+    } else {
+        res.json({
+            "success": false
+        })
+    }
+})
+
+app.post('/api/redeem/', async (req, res) => {
+    const redeem = await Code.findOneAndDelete({ key: req.body.key });
+    if (redeem.length != 0) {
         res.json({
             "success": true
         })
