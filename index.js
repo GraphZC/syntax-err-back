@@ -5,8 +5,6 @@ const mongoose = require('mongoose')
 const Code = require('./models/Code')
 const Answer = require('./models/Answer')
 
-let cors = require("cors");
-app.use(cors());
 app.use(express.json())
 
 mongoose.connect('mongodb+srv://tanaroeg123:70iAIxB4kbJpnUYT@synerr.0bhhwiu.mongodb.net/?retryWrites=true&w=majority', {
