@@ -15,6 +15,10 @@ app.get('/', (req, res) => {
     res.send('Hello World')
 })
 
+app.get('/test', (req, res) => {
+    res.send("Test")
+})
+
 app.post('/api/verify/', async (req, res) => {
     const code = await Code.find({ key: req.body.key })
 
